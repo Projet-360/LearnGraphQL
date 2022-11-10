@@ -32,15 +32,14 @@ const style = {
   },
 
   "& .mainContainer": {
-    height: "95%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
     borderRadius: "20px",
+    marginTop: "50px",
 
     "& >*": {
-      height: "90%",
       width: "95%",
       borderRadius: "20px",
     },

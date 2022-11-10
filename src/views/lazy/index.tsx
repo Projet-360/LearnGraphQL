@@ -8,8 +8,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
-  Box
 } from "@mui/material";
 
 
@@ -17,7 +15,6 @@ import { LIST_LAZY } from "../../api/gql/lazyQueries";
 import tab from "./configLazyData";
 
 const Lazy = () => {
-  const [searchText, setSearchText] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);    
   
@@ -28,7 +25,6 @@ const Lazy = () => {
     getData({
       variables: {
         page,
-        //searchText,
         itemsPerPage: rowsPerPage,
       }
     })
@@ -42,27 +38,8 @@ const Lazy = () => {
     setPage(0);
   }, []);
 
-  const handleChange = (event) => {
-    setSearchText(event.target.value);    
-  }
-
   return (
     <>
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField
-        id="outlined-Search"
-        label="Search"
-        value={searchText}
-        onChange={handleChange}
-      />
-    </Box>
       { !loading && data &&
         <>
           <TableContainer sx={{ maxHeight: 440 }}>

@@ -5,24 +5,32 @@ import {
 
 
 export const LIST_SIMPLE = gql`
-  query {
-    simple {
-      items {
-        id
-        firstName
-        lastName
-        email
-      }
-    }   
+query {
+	characters{
+    results {
+    id
+    image
+    name
+    species
+    type
+    gender
+    origin {
+      id
+    }
+    location {
+      id
+    }  
+    }
   }
+}
 `;
 
 export const useSimpleList = () => {
   const { error, loading, data } = useQuery(LIST_SIMPLE)  
+  
   return {
     error,
     loading,
     data,
-    triggerData : data?.simple?.items || null
   }
 }

@@ -2,15 +2,12 @@ import React, { memo } from "react";
 
 import { BrowserRouter } from "react-router-dom";
 import GeneralLayout from "./GeneralLayout";
-import { MockedProvider } from "@apollo/client/testing";
-import mocks from "../apolloClient";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-// import { ThemeProvider as ThemeProviderV5, Theme } from "@mui/material/styles";
-
-// declare module '@mui/styles/defaultTheme' {
-// 	// eslint-disable-next-line @typescript-eslint/no-empty-interface
-// 	interface DefaultTheme extends Theme {}
-// }
+const client = new ApolloClient({
+  uri: "https://rickandmortyapi.com/graphql",
+  cache: new InMemoryCache()
+})
 
 interface IProviders {
   children: React.ReactNode;
@@ -19,9 +16,9 @@ interface IProviders {
 const Providers: React.FC<IProviders> = ({ children }) => {
   return (
     <BrowserRouter>
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <ApolloProvider client={client}>
         <GeneralLayout>{children}</GeneralLayout>
-      </MockedProvider>
+      </ApolloProvider>
     </BrowserRouter>
   );
 };

@@ -1,15 +1,15 @@
 const tab = [
     {
-        headerValue: "Prénom", 
-        dataKey: "firstName"
+        headerValue: "ID", 
+        dataKey: "id"
     },
     {
         headerValue: "Nom", 
-        dataKey: "lastName"
+        dataKey: "name"
     },
     {
-        headerValue: "e-mail", 
-        dataKey: "email"
+        headerValue: "Genre", 
+        dataKey: "gender"
     }
 ]
 
