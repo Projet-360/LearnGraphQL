@@ -1,6 +1,6 @@
 import {LIST_SIMPLE} from "../api/gql/simpleQueries";
 
-export const mockedSimple_1 = {
+export const mockedSimple = {
   request: {
     query: LIST_SIMPLE,
   },

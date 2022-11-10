@@ -37,10 +37,12 @@ const style = {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    borderRadius: "20px",
 
     "& >*": {
       height: "90%",
       width: "95%",
+      borderRadius: "20px",
     },
   },
 };
@@ -57,6 +59,10 @@ const navigationInfo: any[] = [
   {
     label: "Simple",
     path: "/Simple",
+  },
+  {
+    label: "Lazy",
+    path: "/Lazy",
   },
 ];
 

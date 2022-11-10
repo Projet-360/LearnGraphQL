@@ -12,7 +12,7 @@ const Simple = () => {
   const {error, loading, data} = useSimpleList()
 
   return (
-    <Box sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around", alignContent: "stretch", alignItems: "center", height: '100%' }}>
+    <Box sx={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around", alignContent: "stretch", alignItems: "center", height: '100%', backgroundColor: '#838383', borderRadius: '20px' }}>
     { !loading && data &&
       
       data?.simple?.items?.map( (item) => {

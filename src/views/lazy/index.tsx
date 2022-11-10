@@ -1,23 +1,111 @@
-import React, { useEffect, useState } from "react";
-import { useLazyList } from "../../api/gql/lazyQueries";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Box
+} from "@mui/material";
+
+
+import { LIST_LAZY } from "../../api/gql/lazyQueries";
 import tab from "./configLazyData";
 
 const Lazy = () => {
-  const {error, loading, data} = useLazyList()
+  const [searchText, setSearchText] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);    
+  
+  const [getData, { loading, data }] = useLazyQuery(LIST_LAZY);
+
+  
+  useEffect(() => {    
+    getData({
+      variables: {
+        page,
+        //searchText,
+        itemsPerPage: rowsPerPage,
+      }
+    })
+  }, [rowsPerPage, page]);
+  
+
+  const handleChangePage = useCallback((e, newPage) => setPage(newPage), []);
+  
+  const handleChangeRowsPerPage = useCallback((e) => {
+    setRowsPerPage(e.target.value);
+    setPage(0);
+  }, []);
+
+  const handleChange = (event) => {
+    setSearchText(event.target.value);    
+  }
 
   return (
     <>
-    { !loading && data &&
-      
-      data?.lazy?.items?.map( (item) => {
-        return (
-          tab?.map( ({dataKey}) => 
-            <div key={dataKey}>{item?.[dataKey]}</div>
-          )
-        )
-      })
-    }
-
+    <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField
+        id="outlined-Search"
+        label="Search"
+        value={searchText}
+        onChange={handleChange}
+      />
+    </Box>
+      { !loading && data &&
+        <>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {
+                    tab?.map( ({headerValue}) => 
+                        <TableCell key={headerValue}>{headerValue}</TableCell>
+                    )
+                  }
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {
+                data?.lazy.items.map( (item) => {
+                  return (
+                    <TableRow key={item.id}>
+                      {
+                        tab?.map(({dataKey, personalizedCell}) => 
+                          <TableCell key={dataKey}>
+                          {personalizedCell ? personalizedCell(item) : item?.[dataKey]}
+                          </TableCell>
+                        )
+                      }
+                    </TableRow>
+                  )}
+                )
+              }
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[3, 5]}
+            component="div"
+            count={data?.lazy.paginationInfo?.totalCount || 1}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </>
+    }      
     </>
   );
 };

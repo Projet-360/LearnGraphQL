@@ -1,9 +1,22 @@
 import {
-  mockedSimple_1
+  mockedSimple
 } from "./mockedSimple";
 
+import {
+  mockedLazy_1,
+  mockedLazy_2,
+  mockedLazy_3,
+  mockedLazy_4,
+} from "./mockedLazy";
+
+
+
 const mocks: any = [
-  mockedSimple_1
+  mockedSimple,
+  mockedLazy_1,
+  mockedLazy_2,
+  mockedLazy_3,
+  mockedLazy_4,
 ];
 
 export default mocks;

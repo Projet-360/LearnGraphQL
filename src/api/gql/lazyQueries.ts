@@ -1,28 +1,46 @@
 import {
   gql,
+  OperationVariables,
+  QueryHookOptions,
   useQuery,
 } from "@apollo/client";
 
-
+//Schema
 export const LIST_LAZY = gql`
-  query {
-    lazy {
+  query getLazyList($page: Int, $itemsPerPage: Int, $searchText: String) {
+    lazy(
+      page: $page
+      itemsPerPage: $itemsPerPage
+      searchText: $searchText
+    ) {
       items {
         id
-        firstName
-        lastName
-        email
+        name
+        address
+        manager {
+          id
+          firstName
+          lastName
+        }
+        nbSites
+        nbInterventions
       }
-    }   
+      paginationInfo {
+        totalCount
+      }
+    }
   }
 `;
 
-export const useLazyList = () => {
-  const { error, loading, data } = useQuery(LIST_LAZY)  
+
+//Resolver
+export const useLazyList = (
+  options?: QueryHookOptions<any, OperationVariables> | undefined
+) => {
+  const { loading, data } = useQuery(LIST_LAZY, options);
+
   return {
-    error,
     loading,
-    data,
-    triggerData : data?.lazy?.items || null
-  }
-}
+    data: data?.lazy?.items || null,
+  };
+};

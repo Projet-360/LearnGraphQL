@@ -1,15 +1,28 @@
 const tab = [
     {
-        headerValue: "Prénom", 
-        dataKey: "firstName"
+        headerValue: "Nom du client", 
+        dataKey: "name"
     },
     {
-        headerValue: "Nom", 
-        dataKey: "lastName"
+        headerValue: "Adresse du client", 
+        dataKey: "address"
     },
     {
-        headerValue: "e-mail", 
-        dataKey: "email"
+        headerValue: "Responsable", 
+        dataKey: "manager",
+        personalizedCell: (data) => {
+            return (
+                <div>{`${data.manager.firstName} ${data.manager.lastName}`}</div>    
+            )
+        }
+    },
+    {
+        headerValue: "Nombre de sites", 
+        dataKey: "nbSites"
+    },
+    {
+        headerValue: "Nombre d'interventions", 
+        dataKey: "nbInterventions"
     }
 ]
 
