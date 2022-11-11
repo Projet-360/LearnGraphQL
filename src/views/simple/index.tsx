@@ -8,22 +8,19 @@ import Typography from '@mui/material/Typography';
 
 
 import { useSimpleList } from "../../api/gql/simpleQueries";
-import tab from "./configSimpleData";
 
 const Simple = () => {
   const { error, loading, data } = useSimpleList()
-  console.log(data);
 
   return (
     <Box sx={{padding: 2, display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around", alignContent: "stretch", alignItems: "center", height: '100%', backgroundColor: '#838383', borderRadius: '20px' }}>
       {
         data?.characters?.results?.map( (item) => {
-          
           return (
-            <Card key={item.id} sx={{ width: 350, height: 350, margin: 2}}>
-            <CardMedia            
+            <Card key={item.id} sx={{ width: 350, height: 320, margin: 2}}>
+            <CardMedia
               component="img"
-              height="140"
+              height="200"
               image={item.image}
               alt="green iguana"
             />
@@ -40,6 +37,7 @@ const Simple = () => {
             </CardContent>
           </Card>
           )
+
         }) 
         }
     </Box>

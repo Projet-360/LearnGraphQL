@@ -1,90 +1,75 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-} from "@mui/material";
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import { LIST_LAZY } from "../../api/gql/lazyQueries";
 import tab from "./configLazyData";
 
 const Lazy = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);    
-  
-  const [getData, { loading, data }] = useLazyQuery(LIST_LAZY);
+    const [name, setName] = useState('');
+    const [getData, { loading, data }] = useLazyQuery(LIST_LAZY);
 
-  
-  useEffect(() => {    
+    useEffect(() => {
     getData({
-      variables: {
-        page,
-        itemsPerPage: rowsPerPage,
-      }
+    variables: {
+    name,
+    }
     })
-  }, [rowsPerPage, page]);
-  
+    }, [name]);
 
-  const handleChangePage = useCallback((e, newPage) => setPage(newPage), []);
-  
-  const handleChangeRowsPerPage = useCallback((e) => {
-    setRowsPerPage(e.target.value);
-    setPage(0);
-  }, []);
+    console.log(data?.characters.results);
 
-  return (
+    return (
     <>
+
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={data?.characters.results.map((option) => option.name)}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params}  label="Personnages" />}
+      />
+
       { !loading && data &&
-        <>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {
-                    tab?.map( ({headerValue}) => 
-                        <TableCell key={headerValue}>{headerValue}</TableCell>
-                    )
-                  }
-                </TableRow>
-              </TableHead>
-              <TableBody>
-              {
-                data?.lazy.items.map( (item) => {
-                  return (
-                    <TableRow key={item.id}>
-                      {
-                        tab?.map(({dataKey, personalizedCell}) => 
-                          <TableCell key={dataKey}>
-                          {personalizedCell ? personalizedCell(item) : item?.[dataKey]}
-                          </TableCell>
-                        )
-                      }
-                    </TableRow>
-                  )}
-                )
-              }
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[3, 5]}
-            component="div"
-            count={data?.lazy.paginationInfo?.totalCount || 1}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </>
-    }      
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Nom</TableCell>
+              <TableCell>Espèces</TableCell>
+              <TableCell>Genre</TableCell>
+              <TableCell>Image</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.characters.results.map((row) => (
+            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.species}</TableCell>
+              <TableCell>{row.genre}</TableCell>
+
+              <TableCell>
+                <img src={row.image} alt="" />
+              </TableCell>
+
+            </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      }
     </>
-  );
+    )
 };
 
 export default Lazy;

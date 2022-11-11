@@ -12,14 +12,7 @@ query {
     image
     name
     species
-    type
     gender
-    origin {
-      id
-    }
-    location {
-      id
-    }  
     }
   }
 }

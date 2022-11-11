@@ -7,26 +7,18 @@ import {
 
 //Schema
 export const LIST_LAZY = gql`
-  query getLazyList($page: Int, $itemsPerPage: Int, $searchText: String) {
-    lazy(
-      page: $page
-      itemsPerPage: $itemsPerPage
-      searchText: $searchText
+  query getLazyList($name: String) {
+    characters ( filter: {
+      name: $name
+    }
     ) {
-      items {
+      results {
         id
+        image
         name
-        address
-        manager {
-          id
-          firstName
-          lastName
-        }
-        nbSites
-        nbInterventions
-      }
-      paginationInfo {
-        totalCount
+        species
+        type
+        gender
       }
     }
   }
@@ -37,10 +29,11 @@ export const LIST_LAZY = gql`
 export const useLazyList = (
   options?: QueryHookOptions<any, OperationVariables> | undefined
 ) => {
-  const { loading, data } = useQuery(LIST_LAZY, options);
-
+  const { error, loading, data } = useQuery(LIST_LAZY, options);
+  
   return {
+    error,
     loading,
-    data: data?.lazy?.items || null,
-  };
+    data,
+  }
 };
