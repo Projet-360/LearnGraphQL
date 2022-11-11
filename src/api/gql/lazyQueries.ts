@@ -8,9 +8,10 @@ import {
 //Schema
 export const LIST_LAZY = gql`
   query getLazyList($name: String) {
-    characters ( filter: {
-      name: $name
-    }
+    characters ( 
+      filter: {
+        name: $name
+      }
     ) {
       results {
         id

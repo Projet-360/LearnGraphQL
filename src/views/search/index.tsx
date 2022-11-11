@@ -8,17 +8,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 
 import { LIST_LAZY } from "../../api/gql/lazyQueries";
 import tab from "./configLazyData";
 
-const Lazy = () => {
+const Search = () => {
     const [name, setName] = useState('');
-    const [getData, { loading, data }] = useLazyQuery(LIST_LAZY);
+    const [getData, { loading, data }] = useLazyQuery(LIST_LAZY, {
+      variables: {
+        name,
+      },
+    });
 
     useEffect(() => {
 
@@ -31,18 +31,7 @@ const Lazy = () => {
     }, [name]);
 
     return (
-    <>
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={data?.characters.results.map((option) => option.name)}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} value={name} onChange={(e) => setName(e.target.value)} label="Personnages" />}
-      />
-      
-      <Button onClick={() => getData()}>
-        Search
-      </Button>
+    <>     
       { !loading && data &&
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -75,4 +64,4 @@ const Lazy = () => {
     )
 };
 
-export default Lazy;
+export default Search;
