@@ -63,6 +63,10 @@ const navigationInfo: any[] = [
     label: "Lazy",
     path: "/Lazy",
   },
+  {
+    label: "Search",
+    path: "/Search",
+  },
 ];
 
 const GeneralLayout: React.FC<IGeneralLayout> = ({ children }) => {
