@@ -47,8 +47,6 @@ const Lazy = () => {
     
   }, [name]);
 
-  console.log(data?.characters.results);
-  
   return (
     <>
     { !loading && data &&
